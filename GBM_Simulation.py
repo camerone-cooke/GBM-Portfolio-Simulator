@@ -84,7 +84,7 @@ def retrieve_historical_data(positions):
         period="1y",
         auto_adjust=True
     )["Close"]
-    spy_10y_data = [spy_historical_data[0], spy_historical_data[-1]]
+    spy_10y_data = [spy_historical_data.iloc[0], spy_historical_data.iloc[-1]]
 
     # retrieve most recent risk free rate based on 10 year treasury note close
     rf = (yf.download("^TNX", period="5d")["Close"].iloc[-1]) / 100
