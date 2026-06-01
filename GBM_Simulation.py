@@ -184,21 +184,22 @@ simulated trading day.
 """
 def monte_carlo_simulation(positions, shares, historical_price_data, spy_10y_data, rf, beta):
     s, mu, sig, l, dt = gbm_inputs(positions, historical_price_data, spy_10y_data, rf, beta)
-    portfolio_paths = np.zeros((SIMULATIONS, TRADING_DAYS + 1))
-    for iteration in range(0, SIMULATIONS):
-        z = np.random.normal(size=(len(positions), TRADING_DAYS))
-        correlated_z = l @ z
-        price_paths = np.zeros((len(positions), TRADING_DAYS + 1))
-        price_paths[:, 0] = s
-        portfolio_paths[iteration, 0] = np.sum(s * shares)
-        for step in range(1, TRADING_DAYS + 1):
-            price_paths[:, step] = gbm_calculation(historical_price_data, 
-                                                    price_paths[:, step - 1], 
-                                                    mu, 
-                                                    sig, 
-                                                    correlated_z[:, step - 1], 
-                                                    dt)
-            portfolio_paths[iteration, step] = np.sum(price_paths[:, step] * shares)
+    price_paths = np.zeros((SIMULATIONS, TRADING_DAYS + 1, len(positions)))
+    z = np.random.normal(size=(SIMULATIONS, TRADING_DAYS, len(positions)))
+    correlated_z = z @ l.T
+    price_paths[:, 0, :] = s
+
+    for step in range(0, TRADING_DAYS):
+        price_paths[:, step + 1, :] = gbm_calculation(
+            historical_price_data, 
+            price_paths[:, step, :], 
+            mu, 
+            sig, 
+            correlated_z[:, step, :], 
+            dt
+            )
+        
+    portfolio_paths = np.sum(price_paths * shares, axis=2)
     return mu, sig, portfolio_paths
 
 """
