@@ -183,7 +183,7 @@ adjusted to account for share counts and summed to get portfolio value for each
 simulated trading day.
 """
 def monte_carlo_simulation(positions, shares, historical_price_data, spy_10y_data, rf, beta):
-    s, mu, sig, l, dt = gbm_inputs(positions, historical_price_data, spy_10y_data, rf, beta)
+    s, mu, sig, l, dt = gbm_inputs(historical_price_data, spy_10y_data, rf, beta)
     price_paths = np.zeros((SIMULATIONS, TRADING_DAYS + 1, len(positions)))
     z = np.random.normal(size=(SIMULATIONS, TRADING_DAYS, len(positions)))
     correlated_z = z @ l.T
