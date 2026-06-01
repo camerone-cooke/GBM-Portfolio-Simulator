@@ -149,8 +149,8 @@ def gbm_inputs(historical_price_data, spy_10y_data, rf, beta):
     dt = 1 / TRADING_DAYS
 
     s = historical_price_data.iloc[-1, :]
-    mu = expected_return_calculation(spy_10y_data, rf, beta)
-    sig = volatility_calculation(historical_price_data)
+    mu = expected_return_calculation(spy_10y_data, rf, beta).to_numpy()
+    sig = volatility_calculation(historical_price_data).to_numpy()
     
     corr_matrix = correlation_calculation(historical_price_data)
     cov_matrix = np.outer(sig, sig) * corr_matrix
