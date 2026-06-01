@@ -286,19 +286,26 @@ overall loss after the simulation.
 def portfolio_metrics(mu, sig, rf, positions, shares, portfolio_paths):
     portfolio_value_before_simulation = portfolio_paths[0, 0]
     final_prices = portfolio_paths[:, -1]
-    average_portfolio_value_after_simulation = np.mean(final_prices)
+    mean_portfolio_path = pd.Series(np.mean(portfolio_paths, axis=0))
+    mean_portfolio_value_after_simulation = mean_portfolio_path.iloc[-1]
     median_portfolio_value_after_simulation = np.median(final_prices)
-    percent_change = ((average_portfolio_value_after_simulation 
+    percent_change = ((mean_portfolio_value_after_simulation 
                       / portfolio_value_before_simulation) - 1) * 100
+    logarithmic_returns = np.log(mean_portfolio_path / mean_portfolio_path.shift(1))
+    cleaned_returns = logarithmic_returns.dropna()
+    annualized_portfolio_return = cleaned_returns.mean() * TRADING_DAYS
+    portfolio_volatility = volatility_calculation(mean_portfolio_path)
     value_at_risk = np.percentile(final_prices, 5)
     probability_of_loss = np.mean(final_prices < portfolio_value_before_simulation) * 100
-    portfolio_sharpe = sharpe_calculation(mu, sig, rf, positions, shares, portfolio_paths)
-    portfolio_sortino = sortino_calculation(mu, rf, positions, shares, portfolio_paths)
+    portfolio_sharpe = sharpe_calculation(annualized_portfolio_return, portfolio_volatility, rf, positions, shares, portfolio_paths)
+    portfolio_sortino = sortino_calculation(annualized_portfolio_return, rf, positions, shares, portfolio_paths)
     return {
         'value_before': portfolio_value_before_simulation,
-        'average_value': average_portfolio_value_after_simulation,
+        'mean_value': mean_portfolio_value_after_simulation,
         'median_value': median_portfolio_value_after_simulation,
         'percent_change': percent_change,
+        'volatility': portfolio_volatility,
+        'return': annualized_portfolio_return,
         'value_at_risk': value_at_risk,
         'probability_of_loss': probability_of_loss,
         'sharpe': portfolio_sharpe,
