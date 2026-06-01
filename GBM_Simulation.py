@@ -226,11 +226,9 @@ sig = volatility
 The sharpe of each equity is then multiplied by its respective equity's weight
 in the portfolio. The weighted sharpes are then summmed to get the portfolio sharpe.
 """
-def sharpe_calculation(mu, sig, rf, positions, shares, portfolio_paths):
-    sharpes = ((mu - rf) / sig)
-    weights = portfolio_weighting_calculation(positions, shares, portfolio_paths)
-    weighted_sharpe = np.dot(sharpes, weights)
-    return weighted_sharpe
+def sharpe_calculation(mu, sig, rf):
+    sharpe = ((mu - rf) / sig)
+    return sharpe
 
 """
 This function calculates the downside deviation of returns. Downside deviation
@@ -297,7 +295,7 @@ def portfolio_metrics(mu, sig, rf, positions, shares, portfolio_paths):
     portfolio_volatility = volatility_calculation(mean_portfolio_path)
     value_at_risk = np.percentile(final_prices, 5)
     probability_of_loss = np.mean(final_prices < portfolio_value_before_simulation) * 100
-    portfolio_sharpe = sharpe_calculation(annualized_portfolio_return, portfolio_volatility, rf, positions, shares, portfolio_paths)
+    portfolio_sharpe = sharpe_calculation(annualized_portfolio_return, portfolio_volatility, rf)
     portfolio_sortino = sortino_calculation(annualized_portfolio_return, rf, positions, shares, portfolio_paths)
     return {
         'value_before': portfolio_value_before_simulation,
