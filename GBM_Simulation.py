@@ -190,8 +190,7 @@ def monte_carlo_simulation(positions, shares, historical_price_data, spy_10y_dat
     price_paths[:, 0, :] = s
 
     for step in range(0, TRADING_DAYS):
-        price_paths[:, step + 1, :] = gbm_calculation(
-            historical_price_data, 
+        price_paths[:, step + 1, :] = gbm_calculation( 
             price_paths[:, step, :], 
             mu, 
             sig, 
