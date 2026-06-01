@@ -148,7 +148,7 @@ This function calculates all needed inputs for GBM calculation.
 def gbm_inputs(historical_price_data, spy_10y_data, rf, beta):
     dt = 1 / TRADING_DAYS
 
-    s = historical_price_data.iloc[:, -1]
+    s = historical_price_data.iloc[-1, :]
     mu = expected_return_calculation(spy_10y_data, rf, beta)
     sig = volatility_calculation(historical_price_data)
     
