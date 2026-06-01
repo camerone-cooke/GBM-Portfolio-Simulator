@@ -238,16 +238,9 @@ negative equity risk premium. This is done by taking all days where the log
 returns are less than the daily risk free returns and calculating their standard 
 deviation.
 """
-def downside_deviation_calculation(ticker, rf):
+def downside_deviation_calculation(clean_returns, rf):
     rfDaily = rf/252
-    historical_price_data = yf.Ticker(ticker).history(period='1y')['Close']
-    logarithmic_returns = np.log(historical_price_data 
-                                 / historical_price_data.shift(1))
-    cleaned_returns = logarithmic_returns.dropna()
-    downside_returns = np.array([])
-    for step in cleaned_returns:
-        if (step < rfDaily):
-            downside_returns = np.append(downside_returns, step)
+    downside_returns = (clean_returns - rfDaily).where(clean_returns < rfDaily, 0)
     downside_volatility = downside_returns.std()
     annualized_downside = downside_volatility * np.sqrt(TRADING_DAYS)
     return annualized_downside
@@ -263,15 +256,10 @@ downside_deviation = standard deviation of negative returns
 The sortino of each equity is then multiplied by its respective equity's weight
 in the portfolio. The weighted sortinos are then summmed to get the portfolio sortino.
 """
-def sortino_calculation(mu, rf, positions, shares, portfolio_paths):
-    downside_deviations = np.array([])
-    for equity in positions:
-        downside_deviations = np.append(downside_deviations, 
-                                        downside_deviation_calculation(equity, rf))
-    sortinos = (mu - rf) / downside_deviations
-    weights = portfolio_weighting_calculation(positions, shares, portfolio_paths)
-    weighted_sortino = np.dot(sortinos, weights)
-    return weighted_sortino
+def sortino_calculation(mu, clean_returns, rf):
+    downside_deviations = downside_deviation_calculation(clean_returns, rf)
+    sortino = (mu - rf) / downside_deviations
+    return sortino
 
 """
 This function calculates important metrics to be included in the final output. 
@@ -296,7 +284,7 @@ def portfolio_metrics(mu, sig, rf, positions, shares, portfolio_paths):
     value_at_risk = np.percentile(final_prices, 5)
     probability_of_loss = np.mean(final_prices < portfolio_value_before_simulation) * 100
     portfolio_sharpe = sharpe_calculation(annualized_portfolio_return, portfolio_volatility, rf)
-    portfolio_sortino = sortino_calculation(annualized_portfolio_return, rf, positions, shares, portfolio_paths)
+    portfolio_sortino = sortino_calculation(annualized_portfolio_return, cleaned_returns, rf)
     return {
         'value_before': portfolio_value_before_simulation,
         'mean_value': mean_portfolio_value_after_simulation,
