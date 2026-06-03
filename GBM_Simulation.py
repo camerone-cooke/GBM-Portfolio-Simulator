@@ -311,7 +311,7 @@ def portfolio_display(mu, sig, rf, positions, shares, portfolio_paths):
     print('\nPortfolio Results')
     print('----------------------------------')
     print('Starting Value: $%.2f' % (metrics['value_before']))
-    print('Average Projected Value: $%.2f' % (metrics['average_value']))
+    print('Average Projected Value: $%.2f' % (metrics['mean_value']))
     print('Median Projected Value: $%.2f' % (metrics['median_value']))
     print('Percent Change: ' + 
           ('+%.2f%%' if metrics['percent_change'] > 0 else '-%.2f%%') 
