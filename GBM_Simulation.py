@@ -87,7 +87,8 @@ def retrieve_historical_data(positions):
     spy_10y_data = [spy_historical_data.iloc[0], spy_historical_data.iloc[-1]]
 
     # retrieve most recent risk free rate based on 10 year treasury note close
-    rf = float((yf.download("^TNX", period="5d", auto_adjust=True)["Close"].iloc[-1])) / 100
+    rf = (yf.download("^TNX", period="5d", auto_adjust=True)["Close"].iloc[-1]) / 100
+    rf = float(rf.iloc[0])
 
     # retrieve beta of each equity
     beta = []
