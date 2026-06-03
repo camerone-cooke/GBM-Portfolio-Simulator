@@ -87,8 +87,7 @@ def retrieve_historical_data(positions):
     spy_10y_data = [spy_historical_data.iloc[0], spy_historical_data.iloc[-1]]
 
     # retrieve most recent risk free rate based on 10 year treasury note close
-    rf = (yf.download("^TNX", period="5d")["Close"].iloc[-1]) / 100
-    rf = float(rf.iloc[0])
+    rf = float((yf.download("^TNX", period="5d", auto_adjust=True)["Close"].iloc[-1])) / 100
 
     # retrieve beta of each equity
     beta = []
@@ -96,7 +95,7 @@ def retrieve_historical_data(positions):
         beta.append(yf.Ticker(ticker).info.get('beta'))
 
 
-    return historical_price_data, spy_10y_data, rf, beta
+    return historical_price_data, spy_10y_data, rf, np.array(beta)
 
 """
 Expected return is utilized in GBM to calculate the drift factor and is 
@@ -111,7 +110,7 @@ rp = equity risk premium
 def expected_return_calculation(spy_10y_data, rf, beta):
     ba = beta
     rm = ((spy_10y_data[1] / spy_10y_data[0]) ** (1 / 10)) - 1
-    rp = (rm - rf)
+    rp = (np.array(rm) - rf)
     mu = rf + (ba * rp)
     return mu
 
