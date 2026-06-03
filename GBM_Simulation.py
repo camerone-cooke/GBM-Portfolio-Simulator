@@ -76,7 +76,7 @@ def retrieve_historical_data(positions):
         positions,
         period="1y",
         auto_adjust=True
-    )["Close"]
+    )["Close"][positions]
 
     # retrieve 10y data needed for spy, save first and last value to get change
     spy_historical_data = yf.download(
