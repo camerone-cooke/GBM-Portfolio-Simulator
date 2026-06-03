@@ -24,7 +24,6 @@ Check if number of positions is valid and then run simulation on portfolio.
 """
 def main():
     positions, shares = get_portfolio()
-    start = time.time()
     if (len(positions) < 1):
         print("No positions given")
     else:
@@ -38,8 +37,7 @@ def main():
             beta
             )
         portfolio_display(mu, sig, rf, positions, shares, portfolio_paths)
-    end = time.time()
-    print("Runtime: %.2f seconds" % (end - start))
+    
 
 """
 Prompt user for positions in portfolio and number of shares of each position.
@@ -367,10 +365,13 @@ def portfolio_display(mu, sig, rf, positions, shares, portfolio_paths):
 
     axs[1].legend()
 
+    end = time.time()
+    print("Runtime: %.2f seconds" % (end - start))
+    
     plt.tight_layout()
     plt.show()
 
-
+start = time.time()
 if __name__=="__main__":
     main()
     
