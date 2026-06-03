@@ -17,7 +17,7 @@ import seaborn as sns
 import time
 
 TRADING_DAYS = 252
-SIMULATIONS = 10000
+SIMULATIONS = 100000
 
 """
 Check if number of positions is valid and then run simulation on portfolio.
