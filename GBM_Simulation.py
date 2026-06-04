@@ -63,6 +63,14 @@ def get_portfolio():
     return positions, shares
 
 """
+Manually calculates beta of each position in portfolio.
+"""
+def beta_calculation(positions):
+
+
+    return -1
+
+"""
 Retrieve all data needed.
 """
 def retrieve_historical_data(positions):
