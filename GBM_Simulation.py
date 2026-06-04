@@ -65,7 +65,7 @@ def get_portfolio():
 """
 Manually calculates beta of each position in portfolio.
 """
-def beta_calculation(positions):
+def beta_calculation(positions, spy_historical_data):
     # retrieve historical price data of the positions
     historical_price_data = yf.download(
         positions,
@@ -75,6 +75,8 @@ def beta_calculation(positions):
 
     # calculate simple daily returns
     simple_returns = (historical_price_data / historical_price_data.shift(1)) - 1
+
+
 
     return -1
 
