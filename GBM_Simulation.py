@@ -85,9 +85,6 @@ def beta_calculation(positions, spy_historical_data):
     spy_2y_data = spy_historical_data[-(TRADING_DAYS * 2):]
     spy_1y_data = spy_historical_data[-TRADING_DAYS:]
 
-    # calculate simple daily returns
-    simple_returns = (historical_price_data / historical_price_data.shift(1)) - 1
-
     # array of weightings for different betas
     beta_weights = np.array([0.1, 0.2, 0.3, 0.4])
 
