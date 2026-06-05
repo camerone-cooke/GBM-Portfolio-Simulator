@@ -73,10 +73,17 @@ def beta_calculation(positions, spy_historical_data):
         auto_adjust=True
     )["Close"]
 
+    # seperate price data into time periods
     beta_5y_data = historical_price_data
     beta_3y_data = historical_price_data[-(TRADING_DAYS * 3):]
     beta_2y_data = historical_price_data[-(TRADING_DAYS * 2):]
     beta_1y_data = historical_price_data[-TRADING_DAYS:]
+
+    # seperate spy data into time periods
+    spy_5y_data = spy_historical_data[-(TRADING_DAYS * 5):]
+    spy_3y_data = spy_historical_data[-(TRADING_DAYS * 3):]
+    spy_2y_data = spy_historical_data[-(TRADING_DAYS * 2):]
+    spy_1y_data = spy_historical_data[-TRADING_DAYS:]
 
     # calculate simple daily returns
     simple_returns = (historical_price_data / historical_price_data.shift(1)) - 1
