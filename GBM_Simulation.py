@@ -317,10 +317,10 @@ def portfolio_metrics(mu, sig, rf, positions, shares, portfolio_paths):
     median_portfolio_value_after_simulation = np.median(final_prices)
     percent_change = ((mean_portfolio_value_after_simulation 
                       / portfolio_value_before_simulation) - 1) * 100
-    logarithmic_returns = np.log(mean_portfolio_path / mean_portfolio_path.shift(1))
-    cleaned_returns = logarithmic_returns.dropna()
-    annualized_portfolio_return = cleaned_returns.mean() * TRADING_DAYS
-    portfolio_volatility = cleaned_returns.std() * np.sqrt(TRADING_DAYS)
+    logarithmic_returns = np.log(portfolio_paths[:, 1:] / portfolio_paths[:, :-1])
+    cleaned_returns = pd.Series(logarithmic_returns.flatten())
+    annualized_portfolio_return = logarithmic_returns.mean() * TRADING_DAYS
+    portfolio_volatility = logarithmic_returns.std() * np.sqrt(TRADING_DAYS)
     value_at_risk = np.percentile(final_prices, 5)
     probability_of_loss = np.mean(final_prices < portfolio_value_before_simulation) * 100
     portfolio_sharpe = sharpe_calculation(annualized_portfolio_return, portfolio_volatility, rf)
