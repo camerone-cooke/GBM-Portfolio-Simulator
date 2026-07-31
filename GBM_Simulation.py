@@ -97,10 +97,9 @@ def beta_calculation(positions, spy_historical_data):
     
     weighted_betas = np.sum(weighted_period_betas, axis=0)
 
+    betas_with_mean_reversion = ((2 / 3) * weighted_betas) + ((1 / 3) * 1)
 
-
-
-    return -1
+    return betas_with_mean_reversion
 
 """
 Retrieve all data needed.
