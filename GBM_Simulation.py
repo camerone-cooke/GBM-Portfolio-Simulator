@@ -79,14 +79,12 @@ def beta_calculation(positions, spy_historical_data):
     beta_3y_data = historical_price_data[-(TRADING_DAYS * 3):]
     beta_2y_data = historical_price_data[-(TRADING_DAYS * 2):]
     beta_1y_data = historical_price_data[-TRADING_DAYS:]
-    betas = [beta_5y_data, beta_3y_data, beta_2y_data, beta_1y_data]
+    periods = [beta_5y_data, beta_3y_data, beta_2y_data, beta_1y_data]
 
-
-    # seperate spy data into time periods
-    spy_5y_data = spy_historical_data[-(TRADING_DAYS * 5):]
-    spy_3y_data = spy_historical_data[-(TRADING_DAYS * 3):]
-    spy_2y_data = spy_historical_data[-(TRADING_DAYS * 2):]
-    spy_1y_data = spy_historical_data[-TRADING_DAYS:]
+    for i in range(0, 4):
+        corr_matrix = correlation_calculation(periods[i])
+        sig = volatility_calculation(periods[i])
+        cov_matrix = corr_matrix * np.outer(sig, sig)
 
     # array of weightings for different betas
     beta_weights = np.array([0.1, 0.2, 0.3, 0.4])
