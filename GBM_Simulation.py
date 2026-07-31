@@ -89,7 +89,14 @@ def beta_calculation(positions, spy_historical_data):
         period_betas.append(cov_matrix[-1, :-1] / cov_matrix[-1, -1])
 
     # array of weightings for different betas
-    beta_weights = np.array([0.1, 0.2, 0.3, 0.4])
+    beta_weights = [0.1, 0.2, 0.3, 0.4]
+
+    weighted_period_betas = []
+    for i in range(0, 4):
+        weighted_period_betas.append(period_betas[i] * beta_weights[i])
+    
+    weighted_betas = np.sum(weighted_period_betas, axis=0)
+
 
 
 
