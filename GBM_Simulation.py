@@ -27,14 +27,14 @@ def main():
     if (len(positions) < 1):
         print("No positions given")
     else:
-        historical_price_data, spy_10y_data, rf, beta = retrieve_historical_data(positions)
+        historical_price_data, spy_10y_data, rf, betas = retrieve_historical_data(positions)
         mu, sig, portfolio_paths = monte_carlo_simulation(
             positions, 
             shares, 
             historical_price_data, 
             spy_10y_data, 
             rf, 
-            beta
+            betas
             )
         portfolio_display(mu, sig, rf, positions, shares, portfolio_paths)
     
@@ -133,13 +133,9 @@ def retrieve_historical_data(positions):
     rf = (yf.download("^TNX", period="5d", auto_adjust=True)["Close"].iloc[-1]) / 100
     rf = float(rf.iloc[0])
 
-    # retrieve beta of each equity
-    beta = []
-    for ticker in positions:
-        beta.append(yf.Ticker(ticker).info.get('beta'))
+    betas = beta_calculation(positions, spy_historical_data)
 
-
-    return historical_price_data, spy_10y_data, rf, np.array(beta)
+    return historical_price_data, spy_10y_data, rf, betas
 
 """
 Expected return is utilized in GBM to calculate the drift factor and is 
