@@ -6,7 +6,7 @@ Monte Carlo portfolio simulator using Geometric Brownian Motion with correlated 
 
 ## Project Synopsis
 
-This program simulates potential future values of an equity portfolio using Geometric Brownian Motion and Monte Carlo simulation. Live market data is pulled from Yahoo Finance via the yfinance library and used to compute expected returns, historical volatility, and correlations between asset pairs. The simulation generates 10,000 price paths for the portfolio and outputs a graphical display of the data along with relevant metrics including VaR, Sharpe ratio, Sortino ratio, and probability of loss.
+This program simulates potential future values of an equity portfolio using Geometric Brownian Motion and Monte Carlo simulation. Live market data is pulled from Yahoo Finance via the yfinance library and used to compute expected returns, historical volatility, and correlations between asset pairs. The simulation generates 100,000 price paths for the portfolio and outputs a graphical display of the data along with relevant metrics including VaR, Sharpe ratio, Sortino ratio, and probability of loss.
 
 ---
 
@@ -116,29 +116,29 @@ Portfolio specified for results:
 - Tickers: NVDA, WMT, NEE, LLY, JPM
 - Shares: [1, 1, 1, 1, 1]
 - Simulation horizon: 252 trading days
-- Number of simulations: 10,000
+- Number of simulations: 100,000
 
 ![Portfolio Simulation Output](https://github.com/camerone-cooke/GBM-Portfolio-Simulator/blob/main/GBM_Portfolio_Simulator_Output.png)
 
 Output to console:
-- Starting Value: $1795.53
-- Average Projected Value: $1962.11
-- Median Projected Value: $1949.62
-- Percent Change: +9.28%
-- VaR (95%): $1708.19 (Loss: $87.34, 4.68% Downside)
-- Probability of Loss: 16.13%
+- Starting Value: $1899.89
+- Average Projected Value: $2054.00
+- Median Projected Value: $2041.27
+- Percent Change: +8.11%
+- VaR (95%): $1767.58 (Loss: $132.31, 6.96% Downside)
+- Probability of Loss: 21.09%
 - Sharpe Ratio: 0.30
-- Sortino Ratio: 0.42
+- Sortino Ratio: 0.51
 
 ### Understanding Output
 
 Graphical Output:
-- Left plot: A time-series chart exhibiting all 10,000 projected portfolio trajectories over the 252 day horizon. The price paths that exemplify the Mean, 1st Quartile, and 3rd Quartile are also shown in black.
+- Left plot: A time-series chart exhibiting all 100,000 projected portfolio trajectories over the 252 day horizon. The price paths that exemplify the Mean, 1st Quartile, and 3rd Quartile are also shown in black.
 - Right plot: A histogram bucketing the frequency of the final portfolio values. The initial portfolio value displayed as a blue dotted line and the VaR displayed as a solid black line.
 
 Output to console:
 - Value at Risk (VaR): The minimum expected loss at a specified confidence level (95%)
-- Probability of Loss: The proportion of the 10,000 simulated paths that ended at a final value lower than the initial value, indicating the likelihood of a loss
+- Probability of Loss: The proportion of the 100,000 simulated paths that ended at a final value lower than the initial value, indicating the likelihood of a loss
 - Sharpe Ratio: Measures the portfolio's risk-adjusted return by calculating excess return per unit of risk
 - Sortino Ratio: Measures the portfolio's risk-adjusted return relative to specifically harmful risk by calculating excess return per unit of downside risk
 
@@ -197,7 +197,7 @@ What Equity's price would you like to simulate? or 'quit' to stop: quit
 This project demonstrates:
 - Quantitative Development: Translated an advanced mathematical model into Python
 - Stochastic Modeling: Utilized Geometric Brownian Motion to determine potential values of a multi-asset portfolio
-- Monte Carlo Simulation: Executed 10,000 iterations to generate range of possible portfolio price paths
+- Monte Carlo Simulation: Executed 100,000 iterations to generate range of possible portfolio price paths
 - Correlation Application: Used matrix decomposition to mirror the influence of asset pair correlations
 - Risk Analysis: Evaluated risk by calculating Value at Risk (VaR), Probability of Loss, and risk-adjusted return ratios (Sharpe and Sortino)
 
