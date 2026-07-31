@@ -147,8 +147,8 @@ rf = risk free rate
 ba = beta of equity
 rp = equity risk premium
 """
-def expected_return_calculation(spy_10y_data, rf, beta):
-    ba = beta
+def expected_return_calculation(spy_10y_data, rf, betas):
+    ba = betas
     rm = ((spy_10y_data[1] / spy_10y_data[0]) ** (1 / 10)) - 1
     rp = (np.array(rm) - rf)
     mu = rf + (ba * rp)
@@ -185,11 +185,11 @@ def correlation_calculation(historical_price_data):
 """
 This function calculates all needed inputs for GBM calculation.
 """
-def gbm_inputs(historical_price_data, spy_10y_data, rf, beta):
+def gbm_inputs(historical_price_data, spy_10y_data, rf, betas):
     dt = 1 / TRADING_DAYS
 
     s = historical_price_data.iloc[-1, :]
-    mu = np.asarray(expected_return_calculation(spy_10y_data, rf, beta))
+    mu = np.asarray(expected_return_calculation(spy_10y_data, rf, betas))
     sig = np.asarray(volatility_calculation(historical_price_data))
     
     corr_matrix = correlation_calculation(historical_price_data)
@@ -222,8 +222,8 @@ price as the starting price. The price path generated for each equity is
 adjusted to account for share counts and summed to get portfolio value for each 
 simulated trading day.
 """
-def monte_carlo_simulation(positions, shares, historical_price_data, spy_10y_data, rf, beta):
-    s, mu, sig, l, dt = gbm_inputs(historical_price_data, spy_10y_data, rf, beta)
+def monte_carlo_simulation(positions, shares, historical_price_data, spy_10y_data, rf, betas):
+    s, mu, sig, l, dt = gbm_inputs(historical_price_data, spy_10y_data, rf, betas)
     price_paths = np.zeros((SIMULATIONS, TRADING_DAYS + 1, len(positions)))
     z = np.random.normal(size=(SIMULATIONS, TRADING_DAYS, len(positions)))
     correlated_z = z @ l.T
