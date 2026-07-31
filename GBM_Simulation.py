@@ -72,12 +72,15 @@ def beta_calculation(positions, spy_historical_data):
         period="5y",
         auto_adjust=True
     )["Close"]
+    historical_price_data["SPY"] = spy_historical_data
 
     # seperate price data into time periods
     beta_5y_data = historical_price_data
     beta_3y_data = historical_price_data[-(TRADING_DAYS * 3):]
     beta_2y_data = historical_price_data[-(TRADING_DAYS * 2):]
     beta_1y_data = historical_price_data[-TRADING_DAYS:]
+    betas = [beta_5y_data, beta_3y_data, beta_2y_data, beta_1y_data]
+
 
     # seperate spy data into time periods
     spy_5y_data = spy_historical_data[-(TRADING_DAYS * 5):]
