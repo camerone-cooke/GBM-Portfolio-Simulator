@@ -63,7 +63,13 @@ def get_portfolio():
     return positions, shares
 
 """
-Manually calculates beta of each position in portfolio.
+Manually calculates beta of each position in portfolio. Beta is calculated as
+a weighted average across four periods (5y, 3y, 2y, and 1y). The most recent
+period is weighted heaviest to account for recent price movements and current
+market regime, while the longest period is weighted least, although still included,
+to capture long-term trend, historical strength, and drift. The resulting weighted
+beta is then adjusted toward the market average of 1 to account for mean reversion,
+following the standard Bloomberg approach.
 """
 def beta_calculation(positions, spy_historical_data):
     # retrieve historical price data of the positions
