@@ -167,7 +167,7 @@ Output to console:
 
 Install Dependencies:
 ```bash
-pip install yfinance numpy pandas matplotlib seaborn
+pip install yfinance numpy pandas matplotlib seaborn time
 ```
 
 Run Script:
